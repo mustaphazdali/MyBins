@@ -1,0 +1,32 @@
+#!/data/data/com.termux/files/usr/bin/bash
+
+# Get Hotspot ip
+s_ip=$(ip addr show dev swlan0 | grep -oP '\d+\.\d+\.\d+\.\d+' | head -n 1)
+
+# Get WiFi ip
+w_ip=$(ip addr show dev wlan0 | grep -oP '\d+\.\d+\.\d+\.\d+' | head -n 1)
+
+# Check if Hotspot or wifi are  enabeld
+if (( $(wc -c <<<$s_ip) < 3 && $(wc -c <<<$w_ip) < 3 ))
+then
+	echo "Turn on Hotspot or WiFi first!"
+	exit
+fi
+
+# Set the ip
+if (( $(wc -c <<<$s_ip) > 6 ))
+then
+	ip=$s_ip
+else
+	ip=$w_ip
+fi
+
+# Show url in text format
+echo "http://$ip:8000"
+
+# Show url in QR code
+curl qrenco.de/http://$ip:8000 2>/dev/null
+
+# Start the server
+python3 -m http.server --directory ~/media/ 8000
+#php -S 0.0.0.0:8000 -t ~/media
