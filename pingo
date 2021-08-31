@@ -1,0 +1,12 @@
+#!/data/data/com.termux/files/usr/bin/bash
+
+while true
+do
+	if ping -c 1 192.168.1.$1 &>/dev/null
+	then
+		echo 1:$1
+	else
+		echo 0:$1
+	fi
+	sleep 1
+done
