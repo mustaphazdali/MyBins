@@ -1,0 +1,6 @@
+#!/data/data/com.termux/files/usr/bin/zsh
+
+echo PHP server on 8081
+
+php -S 0.0.0.0:8081
+

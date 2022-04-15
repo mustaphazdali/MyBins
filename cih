@@ -1,0 +1,26 @@
+#!/data/data/com.termux/files/usr/bin/python3
+
+import sys
+from PIL import Image, ImageFont, ImageDraw
+
+prefix = "/data/data/com.termux/files/home/"
+
+cih_image = Image.open(prefix + "resourse/cih/cih.png")
+
+style = ImageFont.truetype(
+        prefix + 'resourse/cih/arial-b.ttf',
+        39)
+
+text = f"{input('Money: ')} MAD"
+
+editable_image = ImageDraw.Draw(cih_image)
+editable_image.text(
+        (1020,667),
+        text,
+        fill=(60,160,0),
+        font=style,
+        anchor='rm')
+
+cih_image.save(prefix + "storage/shared/Pictures/cih_screenshot.png")
+
+print("\nCreated! 👍")

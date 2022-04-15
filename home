@@ -1,0 +1,9 @@
+#!/data/data/com.termux/files/usr/bin/zsh
+
+host=${1%:*}
+port=${1#*:}
+
+echo host $host
+echo port $port
+
+ssh muss@$host -p $port

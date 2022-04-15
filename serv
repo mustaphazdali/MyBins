@@ -1,32 +1,47 @@
 #!/data/data/com.termux/files/usr/bin/zsh
 
 # Get Hotspot ip
-s_ip=$(ip addr show dev swlan0 | grep -oP '\d+\.\d+\.\d+\.\d+' | head -n 1)
+sIP=$(ip addr show dev swlan0 | grep -oP '\d+\.\d+\.\d+\.\d+' | head -n 1)
 
 # Get WiFi ip
-w_ip=$(ip addr show dev wlan0 | grep -oP '\d+\.\d+\.\d+\.\d+' | head -n 1)
+wIP=$(ip addr show dev wlan0 | grep -oP '\d+\.\d+\.\d+\.\d+' | head -n 1)
 
 # Check if Hotspot or wifi are  enabeld
-if (( $(wc -c <<<$s_ip) < 3 && $(wc -c <<<$w_ip) < 3 ))
+if (( $(wc -c <<<$sIP) < 3 && $(wc -c <<<$wIP) < 3 ))
 then
 	echo "Turn on Hotspot or WiFi first!"
 	exit
 fi
 
 # Set the ip
-if (( $(wc -c <<<$s_ip) > 6 ))
+if (( $(wc -c <<<$sIP) > 6 ))
 then
-	ip=$s_ip
+	ip=$sIP
 else
-	ip=$w_ip
+	ip=$wIP
+fi
+
+#Move the videos to MP4 folder
+fn=`ls -1 ~/storage/downloads/ | grep -iP '\.mp4' | wc -l`
+if [ $fn -gt 0 ]
+then
+	echo '=== === === === ==='
+	mv -v ~/storage/downloads/*.mp4 ~/storage/downloads/MP4/
+	echo '=== === === === ==='
 fi
 
 # Show url in text format
-echo "http://$ip:8000"
-
+url="http://$ip:8000"
+#ptrn=$($(seq -s- $(expr(${#url} + 3))) | tr -d '[:digit:]')
+ptrn=$(python3 -c "print(\"-\" * (${#url} + 3))")
+echo
+echo " $ptrn"
+echo \| $url \|
+echo " $ptrn"
+echo
 # Show url in QR code
 curl qrenco.de/http://$ip:8000 2>/dev/null
 
 # Start the server
-python3 -m http.server --directory ~/media/ 8000
+python3 -m http.server --directory  ~/server/media
 #php -S 0.0.0.0:8000 -t  $1
