@@ -1,0 +1,4 @@
+#!/bin/zsh
+
+echo 'PATH=$HOME/MyBins:$PATH #MyBins' >> ~/.bashrc
+echo 'PATH=$HOME/MyBins:$PATH #MyBins' >> ~/.zshrc
