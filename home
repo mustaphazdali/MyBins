@@ -1,5 +1,7 @@
 #!/data/data/com.termux/files/usr/bin/zsh
 
+# This script take's ngrok full generated url to split the host and it's port in order to ssh connection.
+
 host=${1%:*}
 port=${1#*:}
 
